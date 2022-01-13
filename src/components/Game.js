@@ -1,6 +1,9 @@
 import React, { useState, useRef } from 'react';
 import Results from '../components/Results';
 import Playing from '../components/Playing';
+import { ScoreBoard } from './Scoreboard.styles';
+
+import logo from '../images/logo.svg'
 
 export default function Game() {
     const [playerChoice, setPlayerChoice] = useState(null);
@@ -49,7 +52,7 @@ export default function Game() {
         setPlayerChoice(val);
         //execute computers random choice function
         setComputerChoice(drawRandom());
-        //route to result screen 
+        //route to result component 
         setIsResults(true);
     }
 
@@ -57,7 +60,14 @@ export default function Game() {
     return (
         <div>
             {console.log(score)}
-            <p>Score: {score.current}</p>
+            <ScoreBoard>
+                <img src={logo} alt='Rock, Paper, Scissors Logo' />
+                <div className="score-box">
+                    <p className="score-label">Score</p>
+                    <p className="score-number">{score.current}</p>
+                </div>
+            </ScoreBoard>
+
             {isResults === true ?
                 <Results
                     playerChoice={playerChoice}

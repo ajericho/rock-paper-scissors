@@ -1,4 +1,5 @@
 import React from 'react';
+import GameButton from './GameButton';
 
 export default function Playing({options, playGame}) {
 
@@ -6,12 +7,7 @@ export default function Playing({options, playGame}) {
         <div>
            <ul>
                 {options.map(pick => (
-                    <li key={pick}>
-                        <button
-                            onClick={() => playGame(pick)}>
-                            {pick}
-                        </button>
-                    </li>
+                    <GameButton pick={pick} playGame={playGame} />
 
                 ))}
             </ul>
