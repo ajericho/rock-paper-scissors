@@ -18,8 +18,8 @@ export default function Game() {
         //set players option
         setPlayerChoice(val);
         //execute computers random choice function
-
         setComputerChoice(drawRandom());
+        
         //route to result screen 
 
         //add 1 to play count 
