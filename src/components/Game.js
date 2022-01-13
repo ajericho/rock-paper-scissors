@@ -1,49 +1,77 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import Results from '../components/Results';
+import Playing from '../components/Playing';
 
-export default function Game() {
+export default function Game({ score }) {
     const [playerChoice, setPlayerChoice] = useState(null);
     const [computerChoice, setComputerChoice] = useState(null);
-    const [gameCount, setGameCount] = useState(0);
+    const [isResults, setIsResults] = useState(false);
+    const [playerWins, setPlayerWins] = useState(null);
+
 
     const options = ['rock', 'paper', 'scissors'];
 
 
     //function to randomly choose computers option
-    function drawRandom() { 
+    function drawRandom() {
         const draw = Math.floor(Math.random() * options.length);
         return options[draw];
-      }
+    }
+
+    //function to determine winner
+
+    function determineWinner() {
+        if (
+            (playerChoice === 'rock' && computerChoice === 'rock') ||
+            (playerChoice === 'paper' && computerChoice === 'paper') ||
+            (playerChoice === 'scissors' && computerChoice === 'scissors')
+        ) {
+             setPlayerWins('Tie!')
+        }
+        else if (
+            (playerChoice === 'rock' && computerChoice === 'scissors') ||
+            (playerChoice === 'paper' && computerChoice === 'rock') ||
+            (playerChoice === 'scissors' && computerChoice === 'paper')
+            
+        ) {
+             setPlayerWins('Player Wins!')
+        }
+        else {
+             setPlayerWins('House Wins!')
+        }
+    }
+
+
 
     function playGame(val) {
-        //set players option
+        //set players option from onClick
         setPlayerChoice(val);
         //execute computers random choice function
         setComputerChoice(drawRandom());
-        
+        //increase score
+        score();
         //route to result screen 
-
-        //add 1 to play count 
-        setGameCount((gameCount) => (
-            gameCount += 1
-        ))
+        setIsResults(true);
     }
+
+     //determine winner
+    useEffect(() => {
+        determineWinner();
+    });
 
     return (
         <div>
-            <p>Game Count: {gameCount}</p>
-            <ul>
-                {options.map(pick => (
-                    <li key={pick}>
-                        <button
-                            onClick={() => playGame(pick)}>
-                            {pick}
-                        </button>
-                    </li>
+            {isResults === true ?
+                <Results
+                    playerChoice={playerChoice}
+                    computerChoice={computerChoice}
+                    setResults={setIsResults}
+                    winner={playerWins} />
+                :
+                <Playing options={options} playGame={playGame} />
+            }
 
-                ))}
-            </ul>
-            <p>player choice: { playerChoice }</p>
-            <p>computer choice: { computerChoice }</p>
+
         </div>
     )
 }
